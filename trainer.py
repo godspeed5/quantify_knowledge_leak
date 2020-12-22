@@ -1,8 +1,10 @@
 import torch 
+import random
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 
+from collections import deque
 
 if torch.cuda.is_available():
     device = torch.device("cuda:0") 
@@ -12,13 +14,22 @@ else:
     print("Running on the CPU")
 
 
+def random_seeding(use_cuda = True):
+    random.seed(123)
+    np.random.seed(123) # cpu vars
+    torch.manual_seed(123) # cpu  vars
+    if use_cuda: torch.cuda.manual_seed_all(123) # gpu vars
+
+
 def get_labels(X_seq, victim_model):
     y_seq = victim_model.predict(X_seq)
     return y_seq
 
 
 def naive_trainer(model, train_loader, val_loader, optimizer = None, n_epochs = 500):
-    
+    """
+    make sure to run random_seeding before INITIALIZING model
+    """
     if optimizer is None:
         optimizer = torch.optim.Adam(weight_decay = 0.001) # added only wt decay
     criterion = nn.CrossEntropyLoss() # too many options is bad
@@ -49,12 +60,17 @@ def naive_trainer(model, train_loader, val_loader, optimizer = None, n_epochs = 
     return avg_val_loss / len(val_loader.dataset) # return final val loss
 
 
-def improved_trainer(model, train_loader, val_loader, optimizer = None, n_epochs = 500): # set good default for N
-  
-    val_loss_dict = dict()
+def improved_trainer(model, train_loader, val_loader, optimizer = None, 
+                     n_epochs = 500, avg_last = 5): # set good default for N
+    """
+    make sure to run random_seeding before INITIALIZING model
+    """
     if optimizer is None:
         optimizer = torch.optim.Adam(weight_decay = 0.001) # added only wt decay
     criterion = nn.CrossEntropyLoss() # too many options is bad
+
+    val_loss_dict = dict()
+    val_loss_list = deque(maxlen = avg_last) # can be slow if avg_last is large
 
     for epoch in range(n_epochs):
         print(f'\nepoch {epoch}')
@@ -78,7 +94,8 @@ def improved_trainer(model, train_loader, val_loader, optimizer = None, n_epochs
                 val_loss = criterion(val_preds, y_val)
                 avg_val_loss += val_loss.item()
 
-        val_loss_dict[epoch] = avg_val_loss / len(val_loader.dataset) # or avg last k epochs
+        val_loss_list.append(avg_val_loss)  # avg the last 'avg_last' epochs
+        val_loss_dict[epoch] = np.mean(val_loss_list) / len(val_loader.dataset)
 
         stop_condition = None # define stop condition
         if stop_condition:
