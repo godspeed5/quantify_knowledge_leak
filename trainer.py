@@ -41,7 +41,7 @@ def naive_trainer(model, train_loader, val_loader, optimizer = None, n_epochs = 
         avg_val_loss = 0.
         for (inputs_val, y_val) in val_loader:
             inputs_val, y_val = inputs_val.to(device), y_val.to(device)
-            val_preds = model(input_test).squeeze()
+            val_preds = model(inputs_val).squeeze()
             val_loss = criterion(val_preds, y_val)
             avg_val_loss += val_loss.item() 
 
@@ -74,7 +74,7 @@ def improved_trainer(model, train_loader, val_loader, optimizer = None, n_epochs
             avg_val_loss = 0.
             for (inputs_val, y_val) in val_loader:
                 inputs_val, y_val = inputs_val.to(device), y_val.to(device)
-                val_preds = model(input_test).squeeze()
+                val_preds = model(inputs_val).squeeze()
                 val_loss = criterion(val_preds, y_val)
                 avg_val_loss += val_loss.item()
 
