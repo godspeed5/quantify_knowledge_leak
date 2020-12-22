@@ -29,6 +29,7 @@ def get_labels(X_seq, victim_model):
 def naive_trainer(model, train_loader, val_loader, optimizer = None, n_epochs = 500):
     """
     make sure to run random_seeding before INITIALIZING model
+    or better, when intializing model give net = Net(seed)
     """
     if optimizer is None:
         optimizer = torch.optim.Adam(weight_decay = 0.001) # added only wt decay
@@ -64,6 +65,7 @@ def improved_trainer(model, train_loader, val_loader, optimizer = None,
                      n_epochs = 500, avg_last = 5): # set good default for N
     """
     make sure to run random_seeding before INITIALIZING model
+    or better, when intializing model give net = Net(seed)
     """
     if optimizer is None:
         optimizer = torch.optim.Adam(weight_decay = 0.001) # added only wt decay
