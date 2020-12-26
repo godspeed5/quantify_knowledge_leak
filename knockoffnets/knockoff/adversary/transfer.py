@@ -13,7 +13,7 @@ import json
 from datetime import datetime
 
 import sys
-sys.path.append('D:\Courses\Privacy\knockoffnets') # for knockoff import 
+sys.path.append('D:\Courses\Privacy\quantify_knowledge_leak\knockoffnets') # for knockoff import 
 
 import numpy as np
 
@@ -173,4 +173,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    pass
