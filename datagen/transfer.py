@@ -19,7 +19,7 @@ import numpy as np
 
 from tqdm import tqdm
 
-# import torch
+# importing in required files is enough right?
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -27,9 +27,6 @@ from torch.utils.data import Dataset, DataLoader
 import torchvision
 
 from knockoff import datasets
-import knockoff.utils.transforms as transform_utils
-import knockoff.utils.model as model_utils
-import knockoff.utils.utils as knockoff_utils
 from knockoff.victim.blackbox import Blackbox
 import knockoff.config as cfg
 
@@ -40,7 +37,7 @@ __status__ = "Development"
 
 
 class RandomAdversary(object):
-    def __init__(self, blackbox, queryset, batch_size=8):
+    def __init__(self, blackbox, queryset, batch_size = 8):
         self.blackbox = blackbox
         self.queryset = queryset
 
@@ -95,6 +92,15 @@ class RandomAdversary(object):
 
         return self.transferset
 
+def create_dir(dir_path):
+    if not osp.exists(dir_path):
+        print('Path {} does not exist. Creating it...'.format(dir_path))
+        os.makedirs(dir_path)
+
+
+def random_transfer():
+    pass
+
 
 def main():
     parser = argparse.ArgumentParser(description='Construct transfer set')
@@ -110,14 +116,6 @@ def main():
     parser.add_argument('--batch_size', metavar='TYPE', type=int, help='Batch size of queries', default=8)
     parser.add_argument('--root', metavar='DIR', type=str, help='Root directory for ImageFolder', default=None)
     parser.add_argument('--modelfamily', metavar='TYPE', type=str, help='Model family', default=None)
-    # parser.add_argument('--topk', metavar='N', type=int, help='Use posteriors only from topk classes',
-    #                     default=None)
-    # parser.add_argument('--rounding', metavar='N', type=int, help='Round posteriors to these many decimals',
-    #                     default=None)
-    # parser.add_argument('--tau_data', metavar='N', type=float, help='Frac. of data to sample from Adv data',
-    #                     default=1.0)
-    # parser.add_argument('--tau_classes', metavar='N', type=float, help='Frac. of classes to sample from Adv data',
-    #                     default=1.0)
     # ----------- Other params
     parser.add_argument('-d', '--device_id', metavar='D', type=int, help='Device id', default=0)
     parser.add_argument('-w', '--nworkers', metavar='N', type=int, help='# Worker threads to load data', default=10)
@@ -125,7 +123,7 @@ def main():
     params = vars(args)
 
     out_path = params['out_dir']
-    knockoff_utils.create_dir(out_path)
+    create_dir(out_path)
     torch.manual_seed(cfg.DEFAULT_SEED)
     if params['device_id'] >= 0:
         os.environ["CUDA_VISIBLE_DEVICES"] = str(params['device_id'])
