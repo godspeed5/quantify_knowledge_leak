@@ -1,0 +1,16 @@
+If using Linux, directly run in bash shell 
+if using windows, you may use Git Bash or other methods to run bash scripts
+
+Run the bash script below in tiny-imagenet-200 folder: 
+for dr in train/*; do
+            echo $dr;
+            mv $dr/images/* $dr/;
+            rmdir $dr/images;
+        done
+
+
+Run the bash script below in tiny-imagenet-200/val folder:
+while read -r fname label remainder; do
+            mkdir -p val2/$label;
+            mv images/$fname val2/$label/;
+        done < val_annotations.txt
