@@ -22,12 +22,13 @@ import knockoffnets.knockoff.utils.transforms as transform_utils
 
 torch.manual_seed(cfg.DEFAULT_SEED)
 
-def random_sampler(blackbox_dir, batch_size = 64, queryset = "TinyImageNet200"):
+def random_sampler(blackbox_dir, n_images, batch_size = 64, queryset = "TinyImageNet200"):
     """
     Inputs:
         queryset - name of dataset to sample from (str)
         blackbox_dir - location where victim model is saved with checkpoint.pth.tar and params.jason
-
+        batch_size - batch size for fetching images in parallel
+        n_images - number of images to randomly query
 
     """
     # ----------- Set up queryset
@@ -47,5 +48,9 @@ def random_sampler(blackbox_dir, batch_size = 64, queryset = "TinyImageNet200"):
 
     # ----------- Initialize adversary
     adversary = RandomAdversary(blackbox, queryset, batch_size = batch_size)
-    
+
+    print('=> constructing transfer set...')
+    transferset = adversary.get_transferset(n_images)
+
+    return transferset
 
