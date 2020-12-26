@@ -20,8 +20,8 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import torchvision.models as torch_models
 
-import knockoff.config as cfg
-import knockoff.utils.utils as knockoff_utils
+import knockoffnets.knockoff.config as cfg
+import knockoffnets.knockoff.utils.utils as knockoff_utils
 
 __author__ = "Tribhuvanesh Orekondy"
 __maintainer__ = "Tribhuvanesh Orekondy"

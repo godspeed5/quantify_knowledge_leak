@@ -18,7 +18,7 @@ from torch.utils.data import Dataset, DataLoader
 
 from torchvision.datasets.folder import ImageFolder, default_loader
 
-import knockoff.config as cfg
+import knockoffnets.knockoff.config as cfg
 
 __author__ = "Tribhuvanesh Orekondy"
 __maintainer__ = "Tribhuvanesh Orekondy"

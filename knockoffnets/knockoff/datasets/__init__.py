@@ -5,14 +5,14 @@ import numpy as np
 from PIL import ImageFilter
 
 from torchvision.datasets import ImageFolder
-from knockoff.datasets.caltech256 import Caltech256
-from knockoff.datasets.cifarlike import CIFAR10, CIFAR100, SVHN, TinyImagesSubset
-from knockoff.datasets.cubs200 import CUBS200
-from knockoff.datasets.diabetic5 import Diabetic5
-from knockoff.datasets.imagenet1k import ImageNet1k
-from knockoff.datasets.indoor67 import Indoor67
-from knockoff.datasets.mnistlike import MNIST, KMNIST, EMNIST, EMNISTLetters, FashionMNIST
-from knockoff.datasets.tinyimagenet200 import TinyImageNet200
+from knockoffnets.knockoff.datasets.caltech256 import Caltech256
+from knockoffnets.knockoff.datasets.cifarlike import CIFAR10, CIFAR100, SVHN, TinyImagesSubset
+from knockoffnets.knockoff.datasets.cubs200 import CUBS200
+from knockoffnets.knockoff.datasets.diabetic5 import Diabetic5
+from knockoffnets.knockoff.datasets.imagenet1k import ImageNet1k
+from knockoffnets.knockoff.datasets.indoor67 import Indoor67
+from knockoffnets.knockoff.datasets.mnistlike import MNIST, KMNIST, EMNIST, EMNISTLetters, FashionMNIST
+from knockoffnets.knockoff.datasets.tinyimagenet200 import TinyImageNet200
 
 
 # Source: https://discuss.pytorch.org/t/is-there-anyway-to-do-gaussian-filtering-for-an-image-2d-3d-in-pytorch/12351/11

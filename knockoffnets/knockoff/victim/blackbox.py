@@ -17,10 +17,10 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 
-from knockoff.utils.type_checks import TypeCheck
-import knockoff.utils.model as model_utils
-import knockoff.models.zoo as zoo
-from knockoff import datasets
+from knockoffnets.knockoff.utils.type_checks import TypeCheck
+import knockoffnets.knockoff.utils.model as model_utils
+import knockoffnets.knockoff.models.zoo as zoo
+from knockoffnets.knockoff import datasets
 
 __author__ = "Tribhuvanesh Orekondy"
 __maintainer__ = "Tribhuvanesh Orekondy"

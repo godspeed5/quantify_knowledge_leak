@@ -22,26 +22,32 @@ import knockoffnets.knockoff.utils.transforms as transform_utils
 
 torch.manual_seed(cfg.DEFAULT_SEED)
 
-def random_sampler(blackbox_dir, n_images, batch_size = 64, queryset = "TinyImageNet200"):
+def random_sampler(blackbox_dir, n_images, img_folder = None, batch_size = 64, model_family = None, queryset = "TinyImageNet200"):
     """
     Inputs:
-        queryset - name of dataset to sample from (str)
-        blackbox_dir - location where victim model is saved with checkpoint.pth.tar and params.jason
-        batch_size - batch size for fetching images in parallel
+        blackbox_dir - location of victim model
         n_images - number of images to randomly query
-
+        img_folder - location of img folder. REQD for custom queryset
+        batch_size - batch size for fetching images in parallel
+        model_family - type of model architecture (eg. resnet34)
+        queryset - name of dataset to sample from (str) 
+        
+    Outputs:
+        transferset - random input tensors in a list
     """
     # ----------- Set up queryset
     valid_datasets = datasets.__dict__.keys()
     if queryset not in valid_datasets:
         raise ValueError('Dataset not found. Valid arguments = {}'.format(valid_datasets))
-    modelfamily = datasets.dataset_to_modelfamily[queryset_name] if params['modelfamily'] is None else params['modelfamily']
+    
+    modelfamily = datasets.dataset_to_modelfamily[queryset] if model_family is None else model_family
     transform = datasets.modelfamily_to_transforms[modelfamily]['test']
-    if queryset_name == 'ImageFolder':
+    
+    if queryset == 'ImageFolder':
         assert params['root'] is not None, 'argument "--root ROOT" required for ImageFolder'
-        queryset = datasets.__dict__[queryset_name](root=params['root'], transform=transform)
+        queryset = datasets.__dict__[queryset](root=params['root'], transform = transform)
     else:
-        queryset = datasets.__dict__[queryset_name](train=True, transform=transform)
+        queryset = datasets.__dict__[queryset](train=True, transform = transform)
 
     # ----------- Initialize blackbox
     blackbox = Blackbox.from_modeldir(blackbox_dir, device)
@@ -53,4 +59,8 @@ def random_sampler(blackbox_dir, n_images, batch_size = 64, queryset = "TinyImag
     transferset = adversary.get_transferset(n_images)
 
     return transferset
+
+
+if __name__ == '__main__':
+    transferset = random_sampler("knockoffnets/models/victim/caltech256-resnet34", 10)
 

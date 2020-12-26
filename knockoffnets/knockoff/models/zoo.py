@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import os.path as osp
 
-import knockoff.models.cifar
-import knockoff.models.mnist
-import knockoff.models.imagenet
+import knockoffnets.knockoff.models.cifar
+import knockoffnets.knockoff.models.mnist
+import knockoffnets.knockoff.models.imagenet
 
 
 def get_net(modelname, modeltype, pretrained=None, **kwargs):
@@ -15,11 +15,11 @@ def get_net(modelname, modeltype, pretrained=None, **kwargs):
     else:
         try:
             # This should have ideally worked:
-            model = eval('knockoff.models.{}.{}'.format(modeltype, modelname))(**kwargs)
+            model = eval('knockoffnets.knockoff.models.{}.{}'.format(modeltype, modelname))(**kwargs)
         except AssertionError:
             # But, there's a bug in pretrained models which ignores the num_classes attribute.
             # So, temporarily load the model and replace the last linear layer
-            model = eval('knockoff.models.{}.{}'.format(modeltype, modelname))()
+            model = eval('knockoffnets.knockoff.models.{}.{}'.format(modeltype, modelname))()
             if 'num_classes' in kwargs:
                 num_classes = kwargs['num_classes']
                 in_feat = model.last_linear.in_features

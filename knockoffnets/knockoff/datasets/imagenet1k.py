@@ -7,7 +7,7 @@ import os.path as osp
 import numpy as np
 from torchvision.datasets import ImageFolder
 
-import knockoff.config as cfg
+import knockoffnets.knockoff.config as cfg
 
 __author__ = "Tribhuvanesh Orekondy"
 __maintainer__ = "Tribhuvanesh Orekondy"
