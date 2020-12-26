@@ -45,9 +45,9 @@ def random_sampler(blackbox_dir, n_images, img_folder = None, batch_size = 64, m
     
     if queryset == 'ImageFolder':
         assert params['root'] is not None, 'argument "--root ROOT" required for ImageFolder'
-        queryset = datasets.__dict__[queryset](root=params['root'], transform = transform)
+        queryset = datasets.__dict__[queryset](root = img_folder, transform = transform)
     else:
-        queryset = datasets.__dict__[queryset](train=True, transform = transform)
+        queryset = datasets.__dict__[queryset](train = True, transform = transform)
 
     # ----------- Initialize blackbox
     blackbox = Blackbox.from_modeldir(blackbox_dir, device)
@@ -61,6 +61,16 @@ def random_sampler(blackbox_dir, n_images, img_folder = None, batch_size = 64, m
     return transferset
 
 
+def get_training_set():
+    pass
+
 if __name__ == '__main__':
-    transferset = random_sampler("knockoffnets/models/victim/caltech256-resnet34", 10)
+    transferset = random_sampler("knockoffnets/models/victim/caltech256-resnet34", 1)
+    print(transferset[0].shape)
+    blackbox = Blackbox.from_modeldir("knockoffnets/models/victim/caltech256-resnet34")
+
+    m = blackbox.get_model()
+    print(m)
+    # print(blackbox(torch.stack(transferset)))
+
 

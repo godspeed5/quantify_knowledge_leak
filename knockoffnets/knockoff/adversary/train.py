@@ -20,10 +20,10 @@ from torch.utils.data import Dataset
 from torch import optim
 from torchvision.datasets.folder import ImageFolder, IMG_EXTENSIONS, default_loader
 
-import knockoff.config as cfg
-import knockoff.utils.model as model_utils
-from knockoff import datasets
-import knockoff.models.zoo as zoo
+import knockoffnets.knockoff.config as cfg
+import knockoffnets.knockoff.utils.model as model_utils
+from knockoffnets.knockoff import datasets
+import knockoffnets.knockoff.models.zoo as zoo
 
 __author__ = "Tribhuvanesh Orekondy"
 __maintainer__ = "Tribhuvanesh Orekondy"
@@ -189,7 +189,7 @@ def main():
         torch.manual_seed(cfg.DEFAULT_SEED)
         torch.cuda.manual_seed(cfg.DEFAULT_SEED)
 
-        transferset = samples_to_transferset(transferset_samples, budget=b, transform=transform)
+        transferset = samples_to_transferset(transferset_samples, budget=b, transform=transform) # from here
         print()
         print('=> Training at budget = {}'.format(len(transferset)))
 
