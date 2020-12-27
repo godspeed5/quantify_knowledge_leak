@@ -95,7 +95,7 @@ def get_training_set(blackbox_dir, n_images, original_dataset = "Caltech256", im
         transferset_samples = new_transferset_samples
 
     # ----------- Set up testset
-    modelfamily = datasets.dataset_to_modelfamily[original_dataset]
+    model_family = datasets.dataset_to_modelfamily[original_dataset]
     transform = datasets.modelfamily_to_transforms[model_family]['test']
     transferset = samples_to_transferset(transferset_samples, budget = n_images, transform = transform)
     return transferset
