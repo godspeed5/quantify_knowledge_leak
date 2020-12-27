@@ -2,7 +2,7 @@ import torch
 import random
 import numpy as np
 import torch.nn as nn
-import torch.nn.functional as F
+import knockoffnets.knockoff.models.zoo as zoo
 
 from collections import deque
 
@@ -106,3 +106,15 @@ def improved_trainer(model, train_loader, val_loader, optimizer = None,
     print('\n\nFinished Training')
     return val_loss_dict
 
+
+def get_victim_arch(model_name = "resnet34", model_family = "imagenet", original_dataset = "Caltech256"):
+    
+    if original_dataset == "Caltech256": num_classes = 256
+    else: num_classes = None # find num_classes of other datasets
+    model = zoo.get_net(model_name, model_family, pretrained = False, num_classes = num_classes)
+    return model
+
+
+if __name__ == "__main__":
+    # ------------ GETTING MODEL ARCH
+    model = get_victim_arch()
